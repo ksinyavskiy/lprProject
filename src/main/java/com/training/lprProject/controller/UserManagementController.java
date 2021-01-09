@@ -31,19 +31,19 @@ public class UserManagementController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getAllStudents() {
         return userService.getAllStudents();
     }
 
     @GetMapping(path = "{userId}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public User getUserById(@PathVariable("userId") Long userId) {
         return userService.getUserById(userId);
     }
 
     @GetMapping(path = "/pagination")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<User> getSomeStudents(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
                                       @RequestParam(name = "amount", defaultValue = "2") Integer amount) {
         return userService.getSomeStudents(PageRequest.of(pageNumber, amount));

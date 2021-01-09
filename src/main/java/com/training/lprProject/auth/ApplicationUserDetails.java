@@ -20,11 +20,11 @@ public class ApplicationUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Role userRole = user.getRole();
-        Set<GrantedAuthority> grantedAuthorities = userRole.getPermissions().stream()
+        Role role = user.getRole();
+        Set<GrantedAuthority> grantedAuthorities = role.getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getName()))
                 .collect(Collectors.toSet());
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getName().toUpperCase()));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         return grantedAuthorities;
     }
 
