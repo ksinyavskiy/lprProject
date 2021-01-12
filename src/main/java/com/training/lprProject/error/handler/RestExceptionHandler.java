@@ -5,17 +5,27 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<String> handleCommonException(Exception ex, HttpServletRequest request) {
+        if (ex instanceof NullPointerException) {
+            return new ResponseEntity<>("NPE when trying to use the following resource: " +
+                    request.getRequestURI(),HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Internal Server Error, check your request URL: " + request.getRequestURI(),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(value = {UserNotFoundException.class, UsernameNotFoundException.class})
     protected ResponseEntity<Object> handleNotFoundError(RuntimeException ex, WebRequest webRequest) {

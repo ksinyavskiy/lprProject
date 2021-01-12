@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,7 +15,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
@@ -49,15 +47,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.DELETE, "/management/api/v1/students/**")
                         .hasRole("ADMIN")
                     .antMatchers(HttpMethod.GET, "/management/api/v1/students/{userId}/**")
-                        .access("hasRole('ADMIN') OR authentication.principal.username.equals(#userId)")
+                        .access("hasRole('ADMIN') OR authentication.principal.username == #userId")
                     .antMatchers(HttpMethod.GET, "/management/api/v1/students/**")
                         .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                    .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .httpBasic();
     }

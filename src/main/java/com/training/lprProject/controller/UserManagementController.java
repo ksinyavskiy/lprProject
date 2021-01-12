@@ -72,6 +72,6 @@ public class UserManagementController {
         if (userService.isUserExist(studentId)) {
             return new ResponseEntity<>("User with " + studentId + " id still exists", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok("User with " + studentId + " id has been successfully deleted!");
+        return ResponseEntity.ok("User with id = " + studentId + " has been successfully deleted!");
     }
 }
