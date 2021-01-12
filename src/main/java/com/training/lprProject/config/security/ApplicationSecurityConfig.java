@@ -49,7 +49,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.DELETE, "/management/api/v1/students/**")
                         .hasRole("ADMIN")
                     .antMatchers(HttpMethod.GET, "/management/api/v1/students/{userId}/**")
-                        .access("hasRole('ADMIN') OR authentication.principal.username == #userId")
+                        .access("hasRole('ADMIN') OR authentication.principal.username.equals(#userId)")
                     .antMatchers(HttpMethod.GET, "/management/api/v1/students/**")
                         .hasRole("ADMIN")
                 .anyRequest()
