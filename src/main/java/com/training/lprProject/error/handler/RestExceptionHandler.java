@@ -1,7 +1,7 @@
 package com.training.lprProject.error.handler;
 
-import com.training.lprProject.error.custom.UserEmailCredentialsMismatchException;
 import com.training.lprProject.error.custom.UserNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +22,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
     }
 
-    @ExceptionHandler(value = UserEmailCredentialsMismatchException.class)
-    protected ResponseEntity<Object> handleMismatchError(RuntimeException ex, WebRequest webRequest) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, webRequest);
-    }
-
-    @ExceptionHandler(value = AccessDeniedException.class)
-    protected ResponseEntity<Object> handleAccessDeniedError(RuntimeException ex, WebRequest webRequest) {
-        String responseBody = String.format("User %s has no access to the requested resource: %s",
-                Objects.requireNonNull(webRequest.getUserPrincipal()).getName(), ex.getMessage());
-        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.FORBIDDEN, webRequest);
+    @ExceptionHandler(value = org.h2.jdbc.JdbcSQLDataException.class)
+    protected ResponseEntity<Object> handleDbError(RuntimeException ex, WebRequest webRequest) {
+        String responseBody = ex.getMessage();
+        if (ex instanceof DataIntegrityViolationException) {
+            responseBody = Objects.requireNonNull(((DataIntegrityViolationException) ex).getRootCause()).toString();
+        }
+        return handleExceptionInternal(ex, responseBody, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
     }
 }

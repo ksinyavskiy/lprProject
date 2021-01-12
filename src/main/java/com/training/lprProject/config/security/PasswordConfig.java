@@ -1,4 +1,4 @@
-package com.training.lprProject.security.config;
+package com.training.lprProject.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

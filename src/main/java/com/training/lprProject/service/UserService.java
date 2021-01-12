@@ -6,18 +6,17 @@ import com.training.lprProject.projections.StudentView;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    void addStudent(User student);
+    User addStudent(User student);
 
     void deleteStudent(Long studentId);
 
-    User getUserById(Long studentId);
+    boolean isUserExist(Long userId);
 
-    User getStudentByEmail(Principal principal, String email);
+    User getUserById(Long studentId);
 
     AdminView getUserInAdminView(String username);
 

@@ -5,8 +5,10 @@ import com.training.lprProject.projections.AdminView;
 import com.training.lprProject.projections.StudentView;
 import com.training.lprProject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -31,51 +32,46 @@ public class UserManagementController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getAllStudents() {
-        return userService.getAllStudents();
+    public ResponseEntity<List<User>> getAllStudents() {
+        return ResponseEntity.ok(userService.getAllStudents());
     }
 
-    @GetMapping(path = "{userId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public User getUserById(@PathVariable("userId") Long userId) {
-        return userService.getUserById(userId);
+    @GetMapping(path = "/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable(name = "userId") String userId) {
+        return new ResponseEntity<>(userService.getUserById(Long.valueOf(userId)), HttpStatus.FOUND);
     }
 
     @GetMapping(path = "/pagination")
-    @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getSomeStudents(@RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-                                      @RequestParam(name = "amount", defaultValue = "2") Integer amount) {
-        return userService.getSomeStudents(PageRequest.of(pageNumber, amount));
+    public ResponseEntity<List<User>> getSomeStudents(@PageableDefault(size = 2) Pageable pageable) {
+        return ResponseEntity.ok(userService.getSomeStudents(pageable));
     }
 
-    @GetMapping(path = "/getPersonalInfo")
-    @PreAuthorize("hasAuthority('student:read')")
-    public User getPersonalInfo(Principal principal, @RequestParam("email") String email) {
-        return userService.getStudentByEmail(principal, email);
+    @GetMapping(path = "/getAdminView")
+    public ResponseEntity<AdminView> getAdminView(@RequestParam(name = "username") String username) {
+        return new ResponseEntity<>(userService.getUserInAdminView(username), HttpStatus.PARTIAL_CONTENT);
     }
 
-    @GetMapping(path = "/getUserInAdminView")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public AdminView getUserInAdminView(@RequestParam("username") String username) {
-        return userService.getUserInAdminView(username);
-    }
-
-    @GetMapping(path = "/getUserInStudentView")
-    @PreAuthorize("hasAuthority('admin:read')")
-    public StudentView getUserInStudentView(@RequestParam("username") String username) {
-        return userService.getUserInStudentView(username);
+    @GetMapping(path = "/getStudentView")
+    public ResponseEntity<StudentView> getStudentView(@RequestParam("username") String username) {
+        return new ResponseEntity<>(userService.getUserInStudentView(username), HttpStatus.PARTIAL_CONTENT);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('admin:write')")
-    public void addStudent(@RequestBody User student) {
-        userService.addStudent(student);
+    public ResponseEntity<String> addStudent(@RequestBody User student) {
+        User savedUserEntity = userService.addStudent(student);
+
+        if (savedUserEntity.getUserId() != null) {
+            return ResponseEntity.ok("User " + student.getUsername() + " has been successfully added");
+        }
+        return new ResponseEntity<>("User " + student.getUsername() + " was not added", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(path = "{studentId}")
-    @PreAuthorize("hasAuthority('admin:write')")
-    public void deleteUser(@PathVariable("studentId") Long studentId) {
+    public ResponseEntity<String> deleteUser(@PathVariable("studentId") Long studentId) {
         userService.deleteStudent(studentId);
+        if (userService.isUserExist(studentId)) {
+            return new ResponseEntity<>("User with " + studentId + " id still exists", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("User with " + studentId + " id has been successfully deleted!");
     }
 }
