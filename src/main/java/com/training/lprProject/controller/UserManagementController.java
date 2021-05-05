@@ -3,6 +3,7 @@ package com.training.lprProject.controller;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.projections.AdminView;
 import com.training.lprProject.projections.StudentView;
+import com.training.lprProject.projections.UserView;
 import com.training.lprProject.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -67,6 +68,20 @@ public class UserManagementController {
     @GetMapping(path = "/getStudentView", produces = "application/json; charset=UTF-8")
     public ResponseEntity<StudentView> getStudentView(@RequestParam("username") String username) {
         return new ResponseEntity<>(userService.getUserInStudentView(username), HttpStatus.PARTIAL_CONTENT);
+    }
+
+    @GetMapping(path = "/getProjectionView", produces = "application/json; charset=UTF-8")
+    @ApiOperation(value = "Get user-specific projection.",
+            notes = "Get a projection for a specific user using the username and role.",
+            response = UserView.class)
+    public ResponseEntity<UserView> getProjectionView(
+            @ApiParam(value = "Helps to choose what projection should be used to display. Ignore case.",
+            allowableValues = "admin, student.")
+            @RequestParam("role") String role,
+            @ApiParam(value = "User's login")
+            @RequestParam("username") String username) {
+        return new ResponseEntity<>(userService.getProjectionView(username, role.toUpperCase()),
+                HttpStatus.PARTIAL_CONTENT);
     }
 
     @PostMapping

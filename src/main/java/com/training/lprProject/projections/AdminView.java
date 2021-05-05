@@ -1,6 +1,6 @@
 package com.training.lprProject.projections;
 
-public interface AdminView {
+public interface AdminView extends UserView {
 
     String getUsername();
 
