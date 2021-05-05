@@ -1,6 +1,7 @@
 package com.training.lprProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "PERMISSION")
+@ApiModel(value = "Permission entity", description = "A set of permissions for a particular role in the application.")
 public class Permission implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

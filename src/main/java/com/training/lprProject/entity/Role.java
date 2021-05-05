@@ -1,5 +1,7 @@
 package com.training.lprProject.entity;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "ROLE")
+@ApiModel(value = "Role entity", description = "Describes the role for a particular user in the application.")
 public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

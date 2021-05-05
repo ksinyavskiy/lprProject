@@ -1,5 +1,8 @@
 package com.training.lprProject.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -13,6 +16,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "USER")
+@ApiModel(value = "User entity", description = "This is the user entity to represent the user data from the database.")
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +24,7 @@ public class User implements Serializable {
     private Long userId;
     @OneToOne
     @JoinColumn(name = "ROLE_ID")
+    @ApiModelProperty(value = "Describes the role for a particular user", allowableValues = "ADMIN, STUDENT")
     private Role role;
     @Column(name = "FIRST_NAME", length = 20, nullable = false)
     private String firstName;

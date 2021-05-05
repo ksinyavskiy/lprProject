@@ -4,6 +4,9 @@ import com.training.lprProject.entity.User;
 import com.training.lprProject.projections.AdminView;
 import com.training.lprProject.projections.StudentView;
 import com.training.lprProject.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "management/api/v1/students")
+@Api(value = "User Management API Controller", produces = "application/json")
 public class UserManagementController {
 
     private final UserService userService;
@@ -32,12 +36,21 @@ public class UserManagementController {
     }
 
     @GetMapping(produces = "application/json; charset=UTF-8")
+    @ApiOperation(value = "Get all users from the database.",
+            notes = "The query result includes both students and admins. This is a feature for admins.",
+            response = User.class,
+            responseContainer = "List")
     public ResponseEntity<List<User>> getAllStudents() {
         return ResponseEntity.ok(userService.getAllStudents());
     }
 
     @GetMapping(path = "/{userId}", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<User> getUserById(@PathVariable(name = "userId") String userId) {
+    @ApiOperation(value = "Get specified user.",
+            notes = "Get specified user by his ID value.",
+            response = User.class)
+    public ResponseEntity<User> getUserById(
+            @ApiParam(value = "The ID value by which the user will be searched in the database.", required = true)
+            @PathVariable(name = "userId") String userId) {
         return new ResponseEntity<>(userService.getUserById(Long.valueOf(userId)), HttpStatus.FOUND);
     }
 
