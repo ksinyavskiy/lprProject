@@ -31,27 +31,27 @@ public class UserManagementController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json; charset=UTF-8")
     public ResponseEntity<List<User>> getAllStudents() {
         return ResponseEntity.ok(userService.getAllStudents());
     }
 
-    @GetMapping(path = "/{userId}")
+    @GetMapping(path = "/{userId}", produces = "application/json; charset=UTF-8")
     public ResponseEntity<User> getUserById(@PathVariable(name = "userId") String userId) {
         return new ResponseEntity<>(userService.getUserById(Long.valueOf(userId)), HttpStatus.FOUND);
     }
 
-    @GetMapping(path = "/pagination")
+    @GetMapping(path = "/pagination", produces = "application/json; charset=UTF-8")
     public ResponseEntity<List<User>> getSomeStudents(@PageableDefault(size = 2) Pageable pageable) {
         return ResponseEntity.ok(userService.getSomeStudents(pageable));
     }
 
-    @GetMapping(path = "/getAdminView")
+    @GetMapping(path = "/getAdminView", produces = "application/json; charset=UTF-8")
     public ResponseEntity<AdminView> getAdminView(@RequestParam(name = "username") String username) {
         return new ResponseEntity<>(userService.getUserInAdminView(username), HttpStatus.PARTIAL_CONTENT);
     }
 
-    @GetMapping(path = "/getStudentView")
+    @GetMapping(path = "/getStudentView", produces = "application/json; charset=UTF-8")
     public ResponseEntity<StudentView> getStudentView(@RequestParam("username") String username) {
         return new ResponseEntity<>(userService.getUserInStudentView(username), HttpStatus.PARTIAL_CONTENT);
     }

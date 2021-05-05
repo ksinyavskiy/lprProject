@@ -17,6 +17,17 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] AUTH_IGNORING_WHITELIST = {
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/v2/api-docs",
+            "/webjars/**",
+            "/",
+            "index",
+            "/css/*",
+            "/js/*"
+    };
+
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final AccessDeniedHandler accessDeniedHandler;
@@ -40,22 +51,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/", "index", "/css/*", "/js/*")
-                        .permitAll()
-                    .antMatchers(HttpMethod.POST, "/management/api/v1/students/**")
-                        .hasRole("ADMIN")
-                    .antMatchers(HttpMethod.DELETE, "/management/api/v1/students/**")
-                        .hasRole("ADMIN")
+                    .antMatchers(AUTH_IGNORING_WHITELIST).permitAll()
+                    .antMatchers(HttpMethod.POST, "/management/api/v1/students/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.DELETE, "/management/api/v1/students/**").hasRole("ADMIN")
                     .antMatchers(HttpMethod.GET, "/management/api/v1/students/{userId}/**")
                         .access("hasRole('ADMIN') OR authentication.principal.username == #userId")
-                    .antMatchers(HttpMethod.GET, "/management/api/v1/students/**")
-                        .hasRole("ADMIN")
+                    .antMatchers(HttpMethod.GET, "/management/api/v1/students/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
-                .and()
-                    .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+                .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler)
                 .and()
                 .httpBasic();
     }
