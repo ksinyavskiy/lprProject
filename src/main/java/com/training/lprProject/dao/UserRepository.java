@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.role.name = :role AND u.username = :username")
     <T> T getProjectionByRoleName(String username, String role, Class<T> projectionEntity);
+
+    User getUserByEmail(String email);
 }

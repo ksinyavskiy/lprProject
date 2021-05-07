@@ -1,5 +1,6 @@
 package com.training.lprProject.service;
 
+import com.training.lprProject.dto.UserDto;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.projections.AdminView;
 import com.training.lprProject.projections.StudentView;
@@ -18,6 +19,8 @@ public interface UserService extends UserDetailsService {
     boolean isUserExist(Long userId);
 
     User getUserById(Long studentId);
+
+    UserDto getUserInfo(String email);
 
     AdminView getUserInAdminView(String username);
 

@@ -1,5 +1,6 @@
 package com.training.lprProject.controller;
 
+import com.training.lprProject.dto.UserDto;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.projections.AdminView;
 import com.training.lprProject.projections.StudentView;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -53,6 +55,14 @@ public class UserManagementController {
             @ApiParam(value = "The ID value by which the user will be searched in the database.", required = true)
             @PathVariable(name = "userId") String userId) {
         return new ResponseEntity<>(userService.getUserById(Long.valueOf(userId)), HttpStatus.FOUND);
+    }
+
+    @GetMapping(path = "/getUserInfo", produces = "application/json; charset=UTF-8")
+    @ApiOperation(value = "Get user info.",
+            notes = "Get user info using his email. Username, email and roleName are come back.",
+            response = UserDto.class)
+    public ResponseEntity<UserDto> getUserInfo(@PathParam("email") String email) {
+        return new ResponseEntity<>(userService.getUserInfo(email), HttpStatus.PARTIAL_CONTENT);
     }
 
     @GetMapping(path = "/pagination", produces = "application/json; charset=UTF-8")
