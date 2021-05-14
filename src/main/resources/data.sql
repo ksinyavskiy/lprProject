@@ -37,3 +37,9 @@ INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAI
                     VALUES(11, 2, 'Bob', 'Markovich', 'bobMarkovich12', 'killAllEnemies87', 'robBob@gmail.com');
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)
                     VALUES (12, 2, 'Anna', 'Smith', 'tentacle987', 'password123456', 'EMemail@gmail.com');
+
+INSERT INTO ADDRESS (ADDRESS_ID, COUNTRY, REGION, CITY, STREET)
+                    VALUES (1, 'Ukraine', 'Kharkov region', 'Kharkov', 'Shevchenko st, 12');
+
+INSERT INTO SCHOOL (SCHOOL_ID, NAME, ADDRESS_ID)
+                    VALUES (1, 'Kharkov school №5', 1);

@@ -18,8 +18,8 @@ public class AuditManager {
 
     }
 
-        @Pointcut("execution(* com.training.lprProject.service.UserService" +
-                ".addStudent(com.training.lprProject.entity.User)) " + "&& args(user)")
+    @Pointcut("execution(* com.training.lprProject.service.UserService" +
+            ".addStudent(com.training.lprProject.entity.User)) && args(user)")
     public void logAddingStudent(User user) {
 
     }
