@@ -103,6 +103,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable).getContent();
     }
 
+    @Override
+    public List<User> getUsersByEmailStartsWith(String email) {
+        return userRepository.getUsersByEmailStartsWith(email);
+    }
+
     private org.springframework.security.core.userdetails.User buildSpringUserFromJpaUserEntity(User user) {
         String username = String.valueOf(user.getUserId());
         String password = passwordEncoder.encode(user.getPassword());

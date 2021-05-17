@@ -31,4 +31,6 @@ public interface UserService extends UserDetailsService {
     List<User> getAllStudents();
 
     List<User> getSomeStudents(Pageable pageable);
+
+    List<User> getUsersByEmailStartsWith(String email);
 }

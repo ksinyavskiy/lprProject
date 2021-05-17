@@ -22,11 +22,11 @@ INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAI
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)
                     VALUES (4, 2, 'Anna', 'Yablovski', 'tentacle', 'password123', 'email@gmail.com');
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)
-                    VALUES(5, 2, 'Garry', 'Smith', 'check456', 'truePass87', 'Tor_PassGOD@gmail.com');
+                    VALUES(5, 2, 'Garry', 'Smith', 'check456', 'truePass87', 'ma_PassGOD@gmail.com');
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)
                     VALUES (6, 2, 'Vanessa', 'Iordano', 'grasp_body89', 'check56321', 'myQueryE@gmail.com');
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)
-                    VALUES(7, 2, 'Robert', 'Jons', 'spider897_tRue', 'theBestPassword87', 'rolOverTor@gmail.com');
+                    VALUES(7, 2, 'Robert', 'Jons', 'spider897_tRue', 'theBestPassword87', 'maOverTor@gmail.com');
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)
                     VALUES (8, 2, 'Bridget', 'Salovski', 'Salovski78', 'passWordWord45', 'trueBody@gmail.com');
 INSERT INTO USER (USER_ID, ROLE_ID, FIRST_NAME, LAST_NAME, LOGIN, PASSWORD, EMAIL)

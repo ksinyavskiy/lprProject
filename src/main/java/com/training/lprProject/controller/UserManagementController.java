@@ -112,4 +112,23 @@ public class UserManagementController {
         }
         return ResponseEntity.ok("User with id = " + studentId + " has been successfully deleted!");
     }
+
+    @GetMapping(path = "/getUsersWithEmailStartsWith/{emailStart}")
+    @ApiOperation(value = "Get users using email.",
+    notes = "Get users with the same email start. For example, use ma email start to search.")
+    public ResponseEntity<String> getUsersWithEmailStartsWith(@PathVariable("emailStart") String emailStart) {
+        List<User> users = userService.getUsersByEmailStartsWith(emailStart);
+        if (users.isEmpty()) {
+            return new ResponseEntity<>("There are no users with this email start", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(formatOutput(users));
+    }
+
+    private String formatOutput(List<User> users) {
+        StringBuilder sb = new StringBuilder();
+        for (User user : users) {
+            sb.append(user.toString()).append("\n");
+        }
+        return sb.toString();
+    }
 }

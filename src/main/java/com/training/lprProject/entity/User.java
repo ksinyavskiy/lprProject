@@ -135,6 +135,6 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("User: userId = %d, login = %s", userId, username);
+        return String.format("User: userId = %d, login = %s, email = %s", userId, username, email);
     }
 }
