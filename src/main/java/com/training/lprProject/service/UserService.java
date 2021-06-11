@@ -2,9 +2,6 @@ package com.training.lprProject.service;
 
 import com.training.lprProject.dto.UserDto;
 import com.training.lprProject.entity.User;
-import com.training.lprProject.projections.AdminView;
-import com.training.lprProject.projections.StudentView;
-import com.training.lprProject.projections.UserView;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -21,12 +18,6 @@ public interface UserService extends UserDetailsService {
     User getUserById(Long studentId);
 
     UserDto getUserInfo(String email);
-
-    AdminView getUserInAdminView(String username);
-
-    StudentView getUserInStudentView(String username);
-
-    UserView getProjectionView(String username, String role);
 
     List<User> getAllStudents();
 

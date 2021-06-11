@@ -2,9 +2,6 @@ package com.training.lprProject.controller;
 
 import com.training.lprProject.dto.UserDto;
 import com.training.lprProject.entity.User;
-import com.training.lprProject.projections.AdminView;
-import com.training.lprProject.projections.StudentView;
-import com.training.lprProject.projections.UserView;
 import com.training.lprProject.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
@@ -68,30 +64,6 @@ public class UserManagementController {
     @GetMapping(path = "/pagination", produces = "application/json; charset=UTF-8")
     public ResponseEntity<List<User>> getSomeStudents(@PageableDefault(size = 2) Pageable pageable) {
         return ResponseEntity.ok(userService.getSomeStudents(pageable));
-    }
-
-    @GetMapping(path = "/getAdminView", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<AdminView> getAdminView(@RequestParam(name = "username") String username) {
-        return new ResponseEntity<>(userService.getUserInAdminView(username), HttpStatus.PARTIAL_CONTENT);
-    }
-
-    @GetMapping(path = "/getStudentView", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<StudentView> getStudentView(@RequestParam("username") String username) {
-        return new ResponseEntity<>(userService.getUserInStudentView(username), HttpStatus.PARTIAL_CONTENT);
-    }
-
-    @GetMapping(path = "/getProjectionView", produces = "application/json; charset=UTF-8")
-    @ApiOperation(value = "Get user-specific projection.",
-            notes = "Get a projection for a specific user using the username and role.",
-            response = UserView.class)
-    public ResponseEntity<UserView> getProjectionView(
-            @ApiParam(value = "Helps to choose what projection should be used to display. Ignore case.",
-            allowableValues = "admin, student.")
-            @RequestParam("role") String role,
-            @ApiParam(value = "User's login")
-            @RequestParam("username") String username) {
-        return new ResponseEntity<>(userService.getProjectionView(username, role.toUpperCase()),
-                HttpStatus.PARTIAL_CONTENT);
     }
 
     @PostMapping

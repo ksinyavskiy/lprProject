@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import static com.training.lprProject.config.security.ApplicationRole.ADMIN;
+
 @EnableWebSecurity
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -52,11 +54,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                     .antMatchers(AUTH_IGNORING_WHITELIST).permitAll()
-                    .antMatchers(HttpMethod.POST, "/management/api/v1/students/**").hasRole("ADMIN")
-                    .antMatchers(HttpMethod.DELETE, "/management/api/v1/students/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/users/**").hasRole(ADMIN.name())
+                    .antMatchers(HttpMethod.POST, "/management/api/v1/students/**").hasRole(ADMIN.name())
+                    .antMatchers(HttpMethod.DELETE, "/management/api/v1/students/**").hasRole(ADMIN.name())
                     .antMatchers(HttpMethod.GET, "/management/api/v1/students/{userId}/**")
                         .access("hasRole('ADMIN') OR authentication.principal.username == #userId")
-                    .antMatchers(HttpMethod.GET, "/management/api/v1/students/**").hasRole("ADMIN")
+                    .antMatchers(HttpMethod.GET, "/management/api/v1/students/**").hasRole(ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)

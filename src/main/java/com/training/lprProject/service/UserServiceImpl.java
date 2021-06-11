@@ -5,9 +5,6 @@ import com.training.lprProject.dto.UserDto;
 import com.training.lprProject.entity.Role;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.error.custom.UserNotFoundException;
-import com.training.lprProject.projections.AdminView;
-import com.training.lprProject.projections.StudentView;
-import com.training.lprProject.projections.UserView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
@@ -71,26 +68,6 @@ public class UserServiceImpl implements UserService {
         userDto.setRoleName(user.getRole().getName());
 
         return userDto;
-    }
-
-    @Override
-    public AdminView getUserInAdminView(String username) {
-        return userRepository.getUserByUsername(username, AdminView.class)
-                .orElseThrow(() -> new UserNotFoundException("User " + username + " doesn't exist"));
-    }
-
-    @Override
-    public StudentView getUserInStudentView(String username) {
-        return userRepository.getUserByUsername(username, StudentView.class)
-                .orElseThrow(() -> new UserNotFoundException("User " + username + " doesn't exist"));
-    }
-
-    @Override
-    public UserView getProjectionView(String username, String role) {
-        if (role.equals("ADMIN")) {
-            return userRepository.getProjectionByRoleName(username, role, AdminView.class);
-        }
-        return userRepository.getProjectionByRoleName(username, role, StudentView.class);
     }
 
     @Override
