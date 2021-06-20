@@ -34,7 +34,7 @@ public class AuditManager {
         System.out.println("All students are received!");
     }
 
-    @Around(value = "logAddingStudent(user)", argNames = "proceedingJoinPoint,user")
+    @Around(value = "logAddingStudent(user)", argNames = "proceedingJoinPoint, user")
     public Object logBothMethodStartEnd(ProceedingJoinPoint proceedingJoinPoint, User user) throws Throwable {
         Object result;
         try {

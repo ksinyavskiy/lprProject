@@ -6,6 +6,8 @@ import com.training.lprProject.entity.Role;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.error.custom.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -76,7 +78,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsersByEmailStartsWith(String email) {
-        return userRepository.getUsersByEmailStartsWith(email);
+        User user = new User();
+        user.setEmail(email);
+
+        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+                .withMatcher("email", ExampleMatcher.GenericPropertyMatchers.startsWith());
+        return userRepository.findAll(Example.of(user, exampleMatcher));
     }
 
     private org.springframework.security.core.userdetails.User buildSpringUserFromJpaUserEntity(User user) {
