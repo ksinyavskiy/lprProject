@@ -1,7 +1,7 @@
 package com.training.lprProject.service;
 
 import com.training.lprProject.dao.UserRepository;
-import com.training.lprProject.dto.UserDto;
+import com.training.lprProject.dto.UserInfo;
 import com.training.lprProject.entity.Role;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.error.custom.UserNotFoundException;
@@ -55,19 +55,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long userId) {
         return userRepository.getUserByUserId(userId)
-                .orElseThrow(() -> new UserNotFoundException("There is no user with such userId: " + userId));
+                .orElseThrow(() -> new UserNotFoundException("There is no user with " + userId + " userId."));
     }
 
     @Override
-    public UserDto getUserInfo(String email) {
-        User user = userRepository.getUserByEmail(email);
-        UserDto userDto = new UserDto();
-
-        userDto.setUserName(user.getUsername());
-        userDto.setEmail(user.getEmail());
-        userDto.setRoleName(user.getRole().getName());
-
-        return userDto;
+    public UserInfo getUserInfo(String email) {
+        return userRepository.getUserByEmail(email, UserInfo.class)
+                .orElseThrow(() -> new UserNotFoundException("There is no user with " + email + " email."));
     }
 
     @Override

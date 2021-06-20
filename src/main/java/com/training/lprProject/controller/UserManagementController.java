@@ -1,6 +1,6 @@
 package com.training.lprProject.controller;
 
-import com.training.lprProject.dto.UserDto;
+import com.training.lprProject.dto.UserInfo;
 import com.training.lprProject.entity.User;
 import com.training.lprProject.service.UserService;
 import io.swagger.annotations.Api;
@@ -56,8 +56,8 @@ public class UserManagementController {
     @GetMapping(path = "/getUserInfo", produces = "application/json; charset=UTF-8")
     @ApiOperation(value = "Get user info.",
             notes = "Get user info using his email. Username, email and roleName are come back.",
-            response = UserDto.class)
-    public ResponseEntity<UserDto> getUserInfo(@PathParam("email") String email) {
+            response = UserInfo.class)
+    public ResponseEntity<UserInfo> getUserInfo(@PathParam("email") String email) {
         return new ResponseEntity<>(userService.getUserInfo(email), HttpStatus.PARTIAL_CONTENT);
     }
 

@@ -1,6 +1,6 @@
 package com.training.lprProject.service;
 
-import com.training.lprProject.dto.UserDto;
+import com.training.lprProject.dto.UserInfo;
 import com.training.lprProject.entity.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +17,7 @@ public interface UserService extends UserDetailsService {
 
     User getUserById(Long studentId);
 
-    UserDto getUserInfo(String email);
+    UserInfo getUserInfo(String email);
 
     List<User> getAllStudents();
 
